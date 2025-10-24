@@ -1,0 +1,2 @@
+class TimetableChangeRequest < ApplicationRecord
+end
