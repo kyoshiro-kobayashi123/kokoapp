@@ -28,7 +28,7 @@
             <% color = entry&.subject&.color || "#fff" %>
             <td style="background-color:<%= color %>;">
               <% if entry %>
-                <%= link_to entry.subject.subject_name, edit_timetable_entry_path(entry), class: "cell-link" %>
+                <%= link_to entry.subject.subject_name, timetables_teacher_path, class: "cell-link" %>
               <% else %>
                 -
               <% end %>
