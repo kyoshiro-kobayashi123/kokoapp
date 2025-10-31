@@ -3,10 +3,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # 登録済みのUserは1人だけ想定（複数ならfind_by条件を追加）
+    # 教員アカウントは1人だけ想定
     user = User.first
 
-    # bcryptの認証を使う！
+    # bcryptの認証でチェック！
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to timetables_teacher_path, notice: "ログインしました"
