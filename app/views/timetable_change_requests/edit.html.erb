@@ -1,0 +1,68 @@
+<div class="timetable-container">
+  <h1>コマ編集（今週だけの変更）</h1>
+
+  <p>
+    クラスID: <%= @class_id %> /
+    日付: <%= @date.strftime("%Y年%-m月%-d日") %> /
+    <%= @period %>限
+  </p>
+
+  <% if flash[:alert] %>
+    <p class="alert"><%= flash[:alert] %></p>
+  <% end %>
+
+  <%= form_with model: @change,
+                url: timetable_change_request_path,
+                method: :patch,
+                local: true do |f| %>
+
+    <%= f.hidden_field :change_day %>
+    <%= f.hidden_field :change_koma %>
+    <%= f.hidden_field :change_class %>
+
+    <!-- 授業名（セレクトボックス） -->
+    <div class="form-group">
+      <%= f.label :subject_id, "変更後の授業" %><br>
+      <%= f.select :subject_id,
+          options_from_collection_for_select(@subjects, :id, :subject_name, @change.subject_id),
+          {}, class: "input" %>
+    </div>
+
+    <!-- 種類（授業タイプ）ラジオボタン -->
+    <div class="form-group">
+      <p>種類（授業タイプ）</p>
+
+      <label>
+        <%= f.radio_button :lesson_type, :fixed %>
+        毎週固定（白）に戻す
+      </label><br>
+
+      <label>
+        <%= f.radio_button :lesson_type, :changed_lesson %>
+        変更したコマ（青）
+      </label><br>
+
+      <label>
+        <%= f.radio_button :lesson_type, :exam %>
+        試験があるコマ（黒）
+      </label><br>
+
+      <label>
+        <%= f.radio_button :lesson_type, :event %>
+        イベント（オレンジ）
+      </label><br>
+
+      <label>
+        <%= f.radio_button :lesson_type, :final_lesson %>
+        最終コマ（黄）
+      </label>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit "保存", class: "btn" %>
+      <%= link_to "教員用時間割に戻る",
+                  timetables_teacher_path(week: @date.beginning_of_week(:monday)),
+                  class: "btn" %>
+    </div>
+  <% end %>
+</div>
