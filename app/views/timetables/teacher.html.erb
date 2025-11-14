@@ -3,8 +3,14 @@
     <h1>教員用時間割</h1>
     <div class="week-switch">
       <%= link_to "＜ 先週", timetables_teacher_path(week: (@current_week - 7.days)) %>
-      <span class="current-week"><%= @current_week.strftime("%-m月%-d日〜") %><%= (@current_week + 6.days).strftime("%-m月%-d日") %></span>
+      <span class="current-week">
+        <%= @current_week.strftime("%-m月%-d日〜") %>
+        <%= (@current_week + 6.days).strftime("%-m月%-d日") %>
+      </span>
       <%= link_to "翌週 ＞", timetables_teacher_path(week: (@current_week + 7.days)) %>
+    </div>
+    <div class="back-link">
+    <%= link_to "学生用ページに戻る", root_path, class: "btn" %>
     </div>
   </header>
 
@@ -24,19 +30,53 @@
         <tr>
           <td><%= "#{period}限" %></td>
           <% (1..5).each do |wday| %>
-            <% entry = @entries.find { |e| e.period_id == period && e.wday == wday } %>
-            <% color = entry&.subject&.color || "#fff" %>
-            <td style="background-color:<%= color %>;">
-              <% if entry %>
-                <%= link_to entry.subject.subject_name, timetables_teacher_path, class: "cell-link" %>
-              <% else %>
-                -
-              <% end %>
-            </td>
+            <% base_entry = @entries.find { |e| e.period_id == period && e.wday == wday } %>
+
+            <% date = @current_week + (wday - 1).days %>
+            <% change = @change_requests.find { |c| c.change_day == date && c.change_koma == period } %>
+
+            <% if base_entry || change %>
+              <% subject_name =
+                   if change&.subject
+                     change.subject.subject_name
+                   else
+                     base_entry&.subject&.subject_name
+                   end %>
+
+              <% type_key =
+                   if change
+                     change.lesson_type         # "changed_lesson" など(enumの文字列)
+                   else
+                     base_entry&.lesson_type
+                   end %>
+
+              <% type_class =
+                   case type_key
+                   when "changed_lesson" then "changed"
+                   when "exam"           then "exam"
+                   when "event"          then "event"
+                   when "final_lesson"   then "last"
+                   else "fixed"
+                   end %>
+
+              <td class="cell <%= type_class %>">
+                <%= link_to edit_timetable_change_request_path(
+                      date: date,
+                      period: period,
+                      class_id: (base_entry&.class_id || 1)
+                    ), class: "cell-link" do %>
+                  <%= subject_name %>
+                <% end %>
+              </td>
+            <% else %>
+              <td>-</td>
+            <% end %>
           <% end %>
         </tr>
       <% end %>
     </tbody>
+
+
   </table>
 
   <div class="color-guide">
@@ -44,5 +84,6 @@
     <p><span class="color-box changed"></span> 青：変更された授業</p>
     <p><span class="color-box exam"></span> 黒：試験</p>
     <p><span class="color-box event"></span> オレンジ：イベント</p>
+    <p><span class="color-box last"></span> 黄：最終コマ</p>
   </div>
 </div>

@@ -89,3 +89,8 @@
     text-decoration: underline;
   }
   
+  .fixed  { background-color: white; }
+  .changed { background-color: #a3d4ff; }        /* 青 */
+  .exam    { background-color: #000; color:#fff; }  /* 黒 */
+  .event   { background-color: orange; color:#fff; }/* オレンジ */
+  .last    { background-color: yellow; }         /* 黄 */

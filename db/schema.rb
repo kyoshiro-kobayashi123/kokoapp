@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_24_024618) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_14_032301) do
   create_table "subjects", force: :cascade do |t|
     t.string "subject_name"
     t.string "color"
@@ -24,6 +24,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_24_024618) do
     t.string "change_class"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "subject_id"
+    t.integer "lesson_type"
   end
 
   create_table "timetable_entries", force: :cascade do |t|
@@ -33,6 +35,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_24_024618) do
     t.integer "wday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "lesson_type", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|
