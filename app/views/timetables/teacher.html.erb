@@ -9,9 +9,6 @@
       </span>
       <%= link_to "翌週 ＞", timetables_teacher_path(week: (@current_week + 7.days)) %>
     </div>
-    <div class="back-link">
-    <%= link_to "学生用ページに戻る", root_path, class: "btn" %>
-    </div>
   </header>
 
   <table class="timetable">
@@ -85,5 +82,9 @@
     <p><span class="color-box exam"></span> 黒：試験</p>
     <p><span class="color-box event"></span> オレンジ：イベント</p>
     <p><span class="color-box last"></span> 黄：最終コマ</p>
+  </div>
+
+  <div class="back-link">
+    <%= link_to "学生用ページに戻る", root_path, class: "btn" %>
   </div>
 </div>
