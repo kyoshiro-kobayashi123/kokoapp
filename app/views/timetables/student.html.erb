@@ -2,13 +2,14 @@
   <header class="timetable-header">
     <h1>学生用時間割</h1>
     <div class="week-switch">
-      <%= link_to "＜ 先週", timetables_student_path(week: (@current_week - 7.days)) %>
-      <span class="current-week">
-        <%= @current_week.strftime("%-m月%-d日〜") %>
-        <%= (@current_week + 6.days).strftime("%-m月%-d日") %>
-      </span>
-      <%= link_to "翌週 ＞", timetables_student_path(week: (@current_week + 7.days)) %>
-    </div>
+    <%= link_to "＜ 先週", timetables_student_path(week: (@current_week - 7.days)) %>
+    <span class="current-week">
+      <%= @current_week.strftime("%-m月%-d日〜") %>
+      <%= (@current_week + 6.days).strftime("%-m月%-d日") %>
+    </span>
+    <%= link_to "翌週 ＞", timetables_student_path(week: (@current_week + 7.days)) %>
+  </div>
+  
   </header>
 
   <table class="timetable">
